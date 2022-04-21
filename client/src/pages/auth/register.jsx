@@ -11,8 +11,10 @@ const register = () => {
     },
   });
 
+  const inputHandler = () => {};
+
   return (
-    <Flex>
+    <Flex justify="center">
       <Box>
         <Stack>
           <FormControl isInvalid={formik.errors.username}>
