@@ -15,23 +15,23 @@ const register = () => {
 
   return (
     <Flex justify="center">
-      <Box>
-        <Stack>
+      <Box mt="10" borderWidth="1px" borderColor="gray.100" bgColor="gray.50" shadow="base">
+        <Stack m="5">
           <FormControl isInvalid={formik.errors.username}>
             <FormLabel htmlFor="inputUsername">Username</FormLabel>
-            <Input onChange={inputHandler} id="inputUsername" name="username" />
+            <Input borderColor="gray.700" onChange={inputHandler} id="inputUsername" name="username" />
             <FormHelperText>{formik.errors.username}</FormHelperText>
           </FormControl>
 
           <FormControl isInvalid={formik.errors.email}>
             <FormLabel htmlFor="inputEmail">Email</FormLabel>
-            <Input onChange={inputHandler} id="inputEmail" name="email" />
+            <Input borderColor="gray.700" onChange={inputHandler} id="inputEmail" name="email" />
             <FormHelperText>{formik.errors.email}</FormHelperText>
           </FormControl>
 
           <FormControl isInvalid={formik.errors.password}>
             <FormLabel htmlFor="inputPassword">Password</FormLabel>
-            <Input onChange={inputHandler} id="inputPassword" name="password" />
+            <Input borderColor="gray.700" onChange={inputHandler} id="inputPassword" name="password" />
             <FormHelperText>{formik.errors.password}</FormHelperText>
           </FormControl>
         </Stack>
