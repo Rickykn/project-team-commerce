@@ -25,6 +25,8 @@ User.hasMany(Cart, { foreignKey: 'user_id', as: 'user_carts' });
 // 1:M product and cart
 Cart.belongsTo(Product, { foreignKey: 'user_id', as: 'product_carts' });
 Product.hasMany(Cart, { foreignKey: 'user_id', as: 'product_carts' });
+Cart.belongsTo(Product, { foreignKey: 'product_id', as: 'product_carts' });
+Product.hasMany(Cart, { foreignKey: 'product_id', as: 'product_carts' });
 
 // 1:M User and transaction
 Transaction.belongsTo(User, { foreignKey: 'user_id', as: 'user_transactions' });
@@ -32,21 +34,21 @@ User.hasMany(Transaction, { foreignKey: 'user_id', as: 'user_transactions' });
 
 // 1:M transaction and transaction item
 Transaction_item.belongsTo(Transaction, {
-  foreignKey: 'user_id',
+  foreignKey: 'transaction_id',
   as: 'user_transaction_item',
 });
 Transaction.hasMany(Transaction_item, {
-  foreignKey: 'user_id',
+  foreignKey: 'transaction_id',
   as: 'user_transaction_item',
 });
 
 // 1:M product and trancation_item
 Transaction_item.belongsTo(Product, {
-  foreignKey: 'user_id',
+  foreignKey: 'product_id',
   as: 'product_transaction',
 });
 Product.hasMany(Transaction_item, {
-  foreignKey: 'user_id',
+  foreignKey: 'product_id',
   as: 'product_transaction',
 });
 
