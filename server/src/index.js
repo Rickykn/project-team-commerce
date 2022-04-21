@@ -7,6 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT;
 
 const { sequelize } = require("./lib/sequelize");
+const { productRoutes } = require("./routes");
 
 sequelize.sync({ alter: true });
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("<h1>E-Commerce</h1>");
 });
+app.use("/products", productRoutes);
 
 app.listen(PORT, () => {
   console.log("Listening in port", PORT);
