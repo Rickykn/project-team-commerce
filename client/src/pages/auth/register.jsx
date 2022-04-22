@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Icon, Input, InputGroup, InputRightElement, Stack, useToast } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, FormControl, FormHelperText, FormLabel, Heading, Icon, Input, InputGroup, InputRightElement, Stack, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import * as Yup from 'yup';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 
 const register = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const router = useRouter();
+  // const authSelector = useSelector((state) => state.auth);
   const toast = useToast();
 
   const formik = useFormik({
@@ -21,18 +25,21 @@ const register = () => {
         .required('This field is required')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/, 'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'),
       email: Yup.string().required('This field is required').email('invalid email'),
-      full_name: Yup.string().required('This field is required'),
-      repeatPassword: Yup.string().required('This field is required'),
     }),
     validateOnChange: false,
     onSubmit: (values) => {
       console.log(values);
       setTimeout(async () => {
         try {
-          if (values.password != values.repeatPassword) {
-            throw new Error('password not match');
-          }
-          return await axios.post('http://localhost2030/auth/register', values);
+          const res = await axios.post('http://localhost:2030/auth/register', values);
+          toast({
+            title: 'success',
+            description: res.data.message,
+            status: 'success',
+          });
+
+          router.push('/');
+          return;
         } catch (err) {
           console.log(err);
           toast({
@@ -41,7 +48,6 @@ const register = () => {
             status: 'error',
           });
         }
-        dispatch(signUp(values, formik.setSubmitting));
       }, 3000);
       formik.setSubmitting(false);
     },
@@ -52,15 +58,16 @@ const register = () => {
     formik.setFieldValue(name, value);
   };
 
+  // useEffect(() => {
+  //   if (authSelector.id) {
+  //     router.push('/');
+  //   }
+  // }, [authSelector.id]);
   return (
-    <Flex justify="center">
-      <form>
-        <Box w="sm" mt="10" borderWidth="1px" borderColor="gray.100" bgColor="gray.50" shadow="base">
-          <Stack m="5">
-            <Heading mb={2} textAlign="center">
-              Sign up to start shopping
-            </Heading>
-
+    <Container mt={8} alignItems="center" centerContent py="10">
+      <Stack>
+        <Box w="sm" bgColor="gray.100" shadow="inner" p="8" borderColor="gray">
+          <form>
             <FormControl isInvalid={formik.errors.username}>
               <FormLabel htmlFor="inputUsername">Username</FormLabel>
               <Input bgColor="white" onChange={inputHandler} id="inputUsername" name="username" />
@@ -68,8 +75,8 @@ const register = () => {
             </FormControl>
 
             <FormControl isInvalid={formik.errors.email}>
-              <FormLabel htmlFor="inputEmail">Email</FormLabel>
-              <Input bgColor="white" onChange={inputHandler} id="inputEmail" name="email" />
+              <FormLabel htmlFor="inputemail">email</FormLabel>
+              <Input bgColor="white" onChange={inputHandler} id="inputemail" name="email" />
               <FormHelperText>{formik.errors.email}</FormHelperText>
             </FormControl>
 
@@ -93,22 +100,22 @@ const register = () => {
               </InputGroup>
               <FormHelperText>{formik.errors.password}</FormHelperText>
             </FormControl>
-          </Stack>
 
-          <Stack m="4">
-            <Button
-              onClick={formik.handleSubmit}
-              type="submit"
-              colorScheme="blue"
-              disabled={formik.isSubmitting}
-              //
-            >
-              Sign Up
-            </Button>
-          </Stack>
+            <Stack mt="10">
+              <Button
+                onClick={formik.handleSubmit}
+                type="submit"
+                colorScheme="blue"
+                disabled={formik.isSubmitting}
+                //
+              >
+                Sign Up
+              </Button>
+            </Stack>
+          </form>
         </Box>
-      </form>
-    </Flex>
+      </Stack>
+    </Container>
   );
 };
 
