@@ -18,18 +18,16 @@ import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router"
-import { userLogin } from "../../redux/actions/auth"
-import { useSelector, useDispatch } from "react-redux"
+import { useRouter } from "next/router";
+import { userLogin } from "../../redux/actions/auth";
+import { useSelector, useDispatch } from "react-redux";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const authSelector = useSelector((state) => state.auth)
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -43,16 +41,12 @@ const Login = () => {
     validateOnChange: false,
     onSubmit: (values) => {
       setTimeout(() => {
-        dispatch (userLogin(values, formik.setSubmitting))
-      }, 2000)
-    }
+        dispatch(userLogin(values, formik.setSubmitting))
+        
+        router.push("/");
+      }, 2000);
+    },
   });
-
-  useEffect(() => {
-    if (authSelector.id) {
-      router.push("/products")
-    }
-  }, [authSelector.id])
 
   return (
     <Flex
@@ -113,13 +107,20 @@ const Login = () => {
             <Stack spacing="10">
               <Stack direction="row" justify="center" marginBottom="2">
                 <Text>Don't have an account?</Text>
-                <Link color="blue.300" onClick={() => router.push("/auth/register")}> Sign up here</Link>
+                <Link
+                  color="blue.300"
+                  onClick={() => router.push("/auth/register")}
+                >
+                  {" "}
+                  Sign up here
+                </Link>
               </Stack>
             </Stack>
 
             <Button
               onClick={formik.handleSubmit}
               type="submit"
+              disabled={formik.isSubmitting}
               bg="blue.400"
               color="white"
               _hover={{
