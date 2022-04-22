@@ -14,16 +14,22 @@ import {
   InputRightElement,
   FormHelperText,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router"
+import { userLogin } from "../../redux/actions/auth"
+import { useSelector, useDispatch } from "react-redux"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter()
+
+  const authSelector = useSelector((state) => state.auth)
+
+  const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +41,18 @@ const Login = () => {
       password: Yup.string().required("This field is required!"),
     }),
     validateOnChange: false,
+    onSubmit: (values) => {
+      setTimeout(() => {
+        dispatch (userLogin(values, formik.setSubmitting))
+      }, 2000)
+    }
   });
+
+  useEffect(() => {
+    if (authSelector.id) {
+      router.push("/products")
+    }
+  }, [authSelector.id])
 
   return (
     <Flex
