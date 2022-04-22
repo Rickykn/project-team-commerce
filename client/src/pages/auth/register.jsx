@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Icon, Input, InputGroup, InputRightElement, Stack, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, FormControl, FormHelperText, FormLabel, Heading, Icon, Input, InputGroup, InputRightElement, Stack, useToast } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const register = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -27,20 +28,20 @@ const register = () => {
     onSubmit: (values) => {
       console.log(values);
       setTimeout(async () => {
-        // try {
-        //   if (values.password != values.repeatPassword) {
-        //     throw new Error('password not match');
-        //   }
-        //   // return await api.post('/auth/register', values);
-        // } catch (err) {
-        //   console.log(err);
-        //   toast({
-        //     title: 'error',
-        //     description: err.message,
-        //     status: 'error',
-        //   });
-        // }
-        // dispatch(signUp(values, formik.setSubmitting))
+        try {
+          if (values.password != values.repeatPassword) {
+            throw new Error('password not match');
+          }
+          return await axios.post('http://localhost2030/auth/register', values);
+        } catch (err) {
+          console.log(err);
+          toast({
+            title: 'error',
+            description: err.message,
+            status: 'error',
+          });
+        }
+        dispatch(signUp(values, formik.setSubmitting));
       }, 3000);
       formik.setSubmitting(false);
     },
@@ -56,6 +57,10 @@ const register = () => {
       <form>
         <Box w="sm" mt="10" borderWidth="1px" borderColor="gray.100" bgColor="gray.50" shadow="base">
           <Stack m="5">
+            <Heading mb={2} textAlign="center">
+              Sign up to start shopping
+            </Heading>
+
             <FormControl isInvalid={formik.errors.username}>
               <FormLabel htmlFor="inputUsername">Username</FormLabel>
               <Input bgColor="white" onChange={inputHandler} id="inputUsername" name="username" />
