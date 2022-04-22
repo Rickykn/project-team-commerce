@@ -41,8 +41,8 @@ const Login = () => {
     validateOnChange: false,
     onSubmit: (values) => {
       setTimeout(() => {
-        dispatch(userLogin(values, formik.setSubmitting))
-        
+        dispatch(userLogin(values, formik.setSubmitting));
+
         router.push("/");
       }, 2000);
     },
