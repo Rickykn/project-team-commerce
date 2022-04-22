@@ -1,19 +1,15 @@
-import { Box, Image, Badge, Text, Stack, Button } from "@chakra-ui/react";
+import { Box, Image, Text, Stack, Button } from "@chakra-ui/react";
 
-const ProductCard = () => {
+const ProductCard = ({ productName, productImage, stock, price }) => {
   return (
     <Box w="250px" rounded="20px" overflow="hidden" boxShadow="lg">
-      <Image src="https://chakra-ui.com/og-image.png" alt="Product Image" />
+      <Image src={productImage} alt="Product Image" />
       <Box p={5}>
-        <Stack fontSize="x-small">
-          <Text>PRODUCT NAME</Text>
-          <Text>PRICE</Text>
-          <Text>STOCK</Text>
+        <Stack fontSize="sm">
+          <Text>{productName}</Text>
+          <Text>Rp. {price}</Text>
+          <Text>Stock: {stock}</Text>
         </Stack>
-        <Text pt={2} fontSize="sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui,
-          cupiditate ut! Exercitationem
-        </Text>
         <Box textAlign="center">
           <Button
             colorScheme="teal"

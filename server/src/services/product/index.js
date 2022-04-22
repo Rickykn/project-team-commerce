@@ -28,8 +28,8 @@ class ProductService extends Service {
       }
 
       return this.handleSuccess({
-        message: "Find all users",
-        data: findPosts,
+        message: "Find all products",
+        data: findProduct,
       });
     } catch (err) {
       console.log(err);
