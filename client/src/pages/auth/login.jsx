@@ -12,12 +12,30 @@ import {
   useColorModeValue,
   InputGroup,
   InputRightElement,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useRouter } from "next/router"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const router = useRouter()
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object().shape({
+      username: Yup.string().required("This field is required!"),
+      password: Yup.string().required("This field is required!"),
+    }),
+    validateOnChange: false,
+  });
 
   return (
     <Flex
@@ -41,15 +59,26 @@ const Login = () => {
           padding="8"
         >
           <Stack spacing="4">
-            <FormControl id="username">
+            <FormControl isInvalid={formik.errors.username} id="username">
               <FormLabel>Username</FormLabel>
-              <Input type="text" />
+              <Input
+                onChange={(event) =>
+                  formik.setFieldValue("username", event.target.value)
+                }
+                type="text"
+              />
+              <FormHelperText>{formik.errors.username}</FormHelperText>
             </FormControl>
 
-            <FormControl id="password">
+            <FormControl isInvalid={formik.errors.password} id="password">
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  onChange={(event) =>
+                    formik.setFieldValue("password", event.target.value)
+                  }
+                  type={showPassword ? "text" : "password"}
+                />
                 <InputRightElement h="full">
                   <Button
                     variant="ghost"
@@ -61,16 +90,19 @@ const Login = () => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
+              <FormHelperText>{formik.errors.password}</FormHelperText>
             </FormControl>
 
             <Stack spacing="10">
               <Stack direction="row" justify="center" marginBottom="2">
                 <Text>Don't have an account?</Text>
-                <Link color="blue.300"> Sign up here</Link>
+                <Link color="blue.300" onClick={() => router.push("/auth/register")}> Sign up here</Link>
               </Stack>
             </Stack>
 
             <Button
+              onClick={formik.handleSubmit}
+              type="submit"
               bg="blue.400"
               color="white"
               _hover={{
