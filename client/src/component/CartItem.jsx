@@ -8,7 +8,6 @@ import {
     Image,
     Input,
     Stack,
-    Text,
   } from "@chakra-ui/react";
   import { IoMdClose } from "react-icons/io";
   import { useDispatch } from "react-redux";
