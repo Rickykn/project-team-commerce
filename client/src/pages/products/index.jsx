@@ -1,4 +1,14 @@
-import { Box, Center, Grid, GridItem } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  FormLabel,
+  Grid,
+  GridItem,
+  Input,
+  Stack,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../configs/api";
 import ProductCard from "../../components/ProductsCard";
@@ -9,7 +19,6 @@ const Products = () => {
     try {
       const res = await axiosInstance.get("/products");
       setProductList(res.data.result.rows);
-      // console.log(res.data.result.rows)
     } catch (err) {
       console.log(err.response.data.message);
     }
@@ -39,11 +48,20 @@ const Products = () => {
   }, []);
   return (
     <Center>
-      <Box display="flex" py="5" width="100%vw">
-        <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-          {renderProductList()}
-        </Grid>
-      </Box>
+      <Flex display="inline" py="5">
+        <Center>
+          <Input placeholder="Search Product" size="sm" width="50" />
+          <Button colorScheme="teal" size="sm" ml="5">
+            Button
+          </Button>
+        </Center>
+
+        <Box display="flex" py="5" width="100%vw">
+          <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+            {renderProductList()}
+          </Grid>
+        </Box>
+      </Flex>
     </Center>
   );
 };
